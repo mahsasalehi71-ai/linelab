@@ -1,0 +1,983 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101817">
+<title>معمار خط | بازی ریاضی نهم</title>
+<style>
+:root{color-scheme:dark;--bg:#101817;--panel:#172321;--panel-top:#1b2a27;--ink:#f5f3e9;--muted:#bdcdc5;--edge:#344b43;--mint:#a9efce;--amber:#ffd080;--danger:#ffc3b4;--radius:20px}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 95% 0,#203a30 0,transparent 39rem),var(--bg);color:var(--ink);font:17px/1.85 "Noto Sans Arabic",Tahoma,"Segoe UI",Arial,sans-serif}
+button,input,select{font:inherit}
+button,select,summary,input[type="range"]{cursor:pointer}
+button,input[type="text"],select{min-height:46px;border-radius:11px}
+button{border:1px solid var(--edge);padding:.5rem .85rem;background:#21342e;color:var(--ink);font-weight:700}
+button:hover{border-color:var(--mint)}
+button:disabled{opacity:.68;cursor:default}
+button.primary{background:var(--mint);color:#102a21;border-color:var(--mint)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+a{color:var(--mint)}
+h1,h2,h3,p,figure{margin:0}
+[hidden]{display:none!important}
+.shell{max-width:1210px;margin:auto;padding:22px max(16px,env(safe-area-inset-right)) 36px max(16px,env(safe-area-inset-left))}
+.banner{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:5px 0 20px;border-bottom:1px solid var(--edge)}
+.brand{display:flex;align-items:center;gap:14px}
+.mark{display:grid;place-items:center;inline-size:58px;block-size:58px;flex:none;border-radius:17px;background:var(--mint);color:#193428;font:700 27px monospace}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.28;letter-spacing:-.04em}
+.subtitle,.meta,.legend,.small{color:var(--muted)}
+.subtitle,.meta,.legend,.small{font-size:1rem}
+.stats{display:flex;align-items:center;gap:12px}
+.stat{background:#182723;border:1px solid var(--edge);border-radius:13px;padding:6px 13px;text-align:center;min-width:84px}
+.stat strong{display:block;color:var(--mint);font-size:1.25rem;line-height:1.3}
+nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:20px 0}
+nav button{text-align:start;display:flex;gap:8px;align-items:center;min-height:58px;font-size:1rem}
+nav button[aria-current="step"]{background:#28463a;border-color:#83c9a7;color:white}
+.badge{flex:none;display:grid;place-items:center;width:29px;height:29px;border:1px solid #58796a;border-radius:50%;color:var(--mint);font-size:.9rem}
+.work{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);align-items:start;gap:15px}
+.work>*{min-width:0}
+.card{border:1px solid var(--edge);border-radius:var(--radius);background:var(--panel);padding:clamp(15px,2.3vw,24px)}
+.task{display:grid;gap:13px}
+h2{font-size:clamp(24px,3.3vw,34px);line-height:1.36}
+h3{font-size:1.2rem;line-height:1.6}
+.kicker{color:var(--mint);font-weight:700;font-size:1rem}
+.task-text{color:var(--ink)}
+.board{background:linear-gradient(170deg,#1c2e29,var(--panel) 65%)}
+.board-head{display:flex;justify-content:space-between;align-items:start;gap:8px;flex-wrap:wrap;margin-bottom:9px}
+.equation,.math{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Consolas,"Courier New",monospace}
+.equation{display:block;background:#10221b;border:1px solid #3a5d4c;border-radius:9px;padding:3px 9px;color:var(--mint);font-size:clamp(17px,3.8vw,23px);overflow-wrap:anywhere}
+canvas{display:block;width:100%;height:clamp(300px,41vw,428px);background:#101c19;border:1px solid #3a5249;border-radius:13px;direction:ltr}
+canvas.interactive{touch-action:pan-y pinch-zoom;cursor:crosshair}
+figcaption{margin-top:8px}
+.legend{display:flex;gap:7px 14px;flex-wrap:wrap;align-items:center}
+.key::before{display:inline-block;content:"";width:20px;vertical-align:middle;margin-inline-end:6px;border-top:3px solid var(--amber)}
+.key.attempt::before{border-top:3px dashed var(--mint)}
+.ranges,.numbers,.options{display:grid;gap:9px}
+.range{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 10px}
+.range input{grid-column:1/-1;width:100%;min-height:44px;margin:0;accent-color:#a9efce;direction:ltr}
+output{color:var(--amber)}
+.numbers{grid-template-columns:repeat(2,minmax(0,1fr))}
+.numbers label{display:grid;gap:4px;align-content:end}
+input[type="text"],select{width:100%;min-width:0;background:#0f1d18;border:1px solid #668276;color:var(--ink);padding:5px 10px;font-size:18px}
+input[type="text"]{text-align:center;direction:ltr}
+.form{display:grid;gap:12px}
+.options button{text-align:start}
+.options button[aria-pressed="true"]{border-color:var(--mint);background:#2a493e}
+.answer-flow{display:grid;gap:10px}
+.feedback{margin:0;border-inline-start:3px solid var(--amber);padding:8px 11px;border-radius:7px;background:#302b21;color:#ffe0aa;overflow-wrap:anywhere}
+.feedback.ok{border-color:var(--mint);background:#1d392d;color:#daf9e8}
+.feedback.bad{border-color:#eea998;background:#3d2b25;color:var(--danger)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.actions button{flex:1 1 auto}
+.countline{display:flex;justify-content:space-between;align-items:baseline;gap:6px 14px;flex-wrap:wrap}
+details{border-top:1px solid var(--edge);padding-top:8px}
+summary{color:var(--mint);font-weight:700;min-height:44px;align-content:center}
+details p+ p{margin-top:8px}
+table{border-collapse:collapse;width:100%;direction:ltr;text-align:center;font-size:.98rem}
+td,th{border:1px solid var(--edge);padding:3px}
+th{color:var(--mint)}
+.quiz{max-width:760px;margin-inline:auto;display:grid;gap:14px}
+.quiz-flow{display:grid;gap:13px}
+.quiz .options button{min-height:52px}
+.quiz-score{font-size:clamp(30px,7vw,50px);line-height:1.4;color:var(--mint);font-weight:700}
+.skill-results{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.skill-results li{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#1c2e28;padding:6px 11px;border-radius:9px}
+.quiz-review{display:grid;gap:8px}
+.quiz-review details{padding-inline:8px}
+.quiz-review p{overflow-wrap:anywhere}
+.exercise-picker{display:grid;gap:5px}
+#quizTab{border-color:#a28350}
+#quizTab[aria-current="page"]{background:var(--amber);color:#332414}
+.quiz .actions{margin-top:5px}
+.graph-link{display:none}
+@media(max-width:760px){#quizTab{grid-column:1/-1}.graph-link{display:inline-flex;align-items:center;min-height:44px}}
+.coord{display:inline-block;vertical-align:middle;white-space:nowrap;margin-inline:.12em;color:var(--mint)}
+.coord-rows,.point-column{display:grid;justify-items:center;position:relative;padding-inline:.64em;line-height:1.25}
+.coord-rows{min-inline-size:2em;font-weight:700;gap:.12em}
+.coord-rows>span{unicode-bidi:isolate}
+.coord-rows::before,.coord-rows::after,.point-column::before,.point-column::after{content:"";position:absolute;inset-block:0;width:.34em;border:1.5px solid currentColor;pointer-events:none}
+.coord-rows::before,.point-column::before{left:0;border-right:0;border-radius:.65em 0 0 .65em}
+.coord-rows::after,.point-column::after{right:0;border-left:0;border-radius:0 .65em .65em 0}
+.point-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.point-edit{border:0;min-inline-size:0;margin:0;padding:0;text-align:center}
+.point-edit legend{margin:auto;padding:0 0 5px}
+.point-column{color:var(--mint);gap:5px;max-width:10rem;margin:auto}
+.point-column label{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:5px;width:100%;direction:ltr}
+.point-column input{padding-inline:3px}
+.point-controls{display:grid;gap:9px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:760px){.shell{padding-top:13px}.banner{gap:12px;padding-bottom:14px}.work{grid-template-columns:minmax(0,1fr);gap:11px}.work .card{padding:15px}.task .board{padding:9px;border-radius:14px}.task canvas{height:clamp(245px,73vw,360px)}nav{grid-template-columns:repeat(2,minmax(0,1fr));margin:13px 0}nav button{min-height:49px}.mark{width:43px;height:43px;font-size:22px;border-radius:12px}.brand{gap:9px}.stats{gap:5px}.stat{min-width:0;padding-inline:8px}.stat span,.subtitle{font-size:.89rem}canvas{height:clamp(280px,79vw,390px)}}
+@media(max-width:350px){.shell{padding-inline:10px}.mark{display:none}.brand{gap:0}nav button{padding-inline:6px}.stat{padding-inline:6px}.stats{gap:4px}.board-head{gap:5px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="banner">
+  <div class="brand"><div class="mark" aria-hidden="true">↗</div><div><h1>معمار خط</h1><p class="subtitle">بازی معادلهٔ خط · ریاضی نهم</p></div></div>
+  <div class="stats" aria-label="امتیاز و پیشرفت">
+    <div class="stat"><strong id="score">۰</strong><span>امتیاز</span></div>
+    <div class="stat"><strong id="progress">۰ از ۴</strong><span>مرحله</span></div>
+  </div>
+</header>
+<nav id="nav" aria-label="مراحل بازی"></nav>
+<p id="announce" class="sr" role="status"></p>
+<div class="work" id="practice">
+  <section class="card task" aria-labelledby="title">
+    <div><p id="count" class="kicker"></p><h2 id="title" tabindex="-1"></h2></div>
+    <p id="prompt" class="task-text"></p>
+    <div id="controls" class="answer-flow"></div>
+    <details id="hint"><summary>راهنمای حل</summary><p id="hintText"></p></details>
+    <p id="feedback" class="feedback" role="status" hidden></p>
+    <div class="actions" id="nextRow" hidden><button id="next" class="primary" type="button"></button></div>
+  </section>
+  <figure id="board" class="card board" aria-labelledby="boardTitle">
+    <div class="board-head"><h3 id="boardTitle">صفحهٔ مختصات</h3><output id="eq" class="equation" dir="ltr"></output></div>
+    <canvas id="graph" role="img" aria-label="نمودار معادلهٔ خط" aria-describedby="description">نمایش نمودار در مرورگر شما در دسترس نیست.</canvas>
+    <figcaption><div class="legend" id="legend"></div><p id="description" class="small"></p></figcaption>
+    <div id="table"></div>
+  </figure>
+</div>
+<section id="quiz" class="card quiz" aria-labelledby="quizTitle" hidden>
+  <div><p id="quizCount" class="kicker"></p><h2 id="quizTitle" tabindex="-1">آزمون پایانی</h2></div>
+  <div id="quizBody"></div>
+  <p id="quizMessage" class="feedback" role="status" hidden></p>
+</section>
+<noscript>برای اجرای بازی، جاوااسکریپت مرورگر را فعال کنید.</noscript>
+</main>
+<script>
+"use strict";
+
+const number = new Intl.NumberFormat("fa-IR",{maximumFractionDigits:6});
+const fa = value => number.format(value === 0 ? 0 : value);
+
+function coordinate({x,y}) {
+  const rows=[fraction(x),fraction(y)];
+  return `<span class="coord" dir="ltr">
+    <span class="sr">مختصات: ایکس ${rows[0]}، ایگرگ ${rows[1]}</span>
+    <span class="coord-rows" aria-hidden="true"><span>${rows[0]}</span><span>${rows[1]}</span></span>
+  </span>`;
+}
+
+const stages = [
+  {name:"آزمایشگاه", title:"آزمایشگاه خط", tasks:[
+    {prompt:"عرض از مبدأ را صفر نگه دار. اگر شیب از ۲− به ۱− برسد، خط چه تغییری می‌کند؟",
+      options:["هنوز نزولی است و ملایم‌تر می‌شود.","هنوز نزولی است و تندتر می‌شود.","صعودی می‌شود."], correct:0, start:[-2,0],
+      hint:"برای مقایسهٔ تندی، قدرمطلق شیب‌ها را مقایسه کن. علامت شیب جهت خط را مشخص می‌کند.",
+      why:"قدر مطلق شیب از ۲ به ۱ کم شد و علامت آن منفی ماند.", end:[-1,0]},
+    {prompt:"شیب را ثابت نگه دار. با تغییر عرض از مبدأ از ۱− به ۱، خط چگونه جابه‌جا می‌شود؟",
+      options:["۲ واحد پایین می‌رود.","۲ واحد بالا می‌رود.","حول مبدأ می‌چرخد."], correct:1, start:[1,-1],
+      hint:"اگر فقط b عوض شود، مقدار y برای هر x به یک اندازه تغییر می‌کند.",
+      why:"با افزایش b به اندازهٔ ۲، مقدار y برای هر x دو واحد بیشتر شد.", end:[1,1]},
+    {prompt:"اگر شیب از ۱ به صفر برسد و عرض از مبدأ ۳ بماند، خط جدید چه شکلی دارد؟",
+      options:["خط عمودی از x = ۳ می‌گذرد.","خط افقی از y = ۰ می‌گذرد.","خط افقی از y = ۳ می‌گذرد."], correct:2, start:[1,3],
+      hint:"در رابطهٔ y = ax + b، به جای a صفر بگذار.",
+      why:"وقتی a صفر است، y برای همهٔ xها برابر ۳ است.", end:[0,3]}
+  ]},
+  {name:"ساخت خط", title:"ساخت خط با دو نقطه", tasks:[
+    {prompt:`خطی بساز که از هر دو نقطهٔ ${coordinate({x:1,y:2})} و ${coordinate({x:3,y:6})} بگذرد.`,
+      hint:"این دو نقطه یک خط را تعیین می‌کنند. هر دو نقطهٔ متمایز دیگر با مختصات صحیح روی همین خط هم پذیرفته می‌شوند.", test:(p,q,dx,dy)=>dy===2*dx&&p.y===2*p.x,
+      why:"خط ساخته‌شده از هر دو نقطهٔ داده‌شده می‌گذرد."},
+    {prompt:"با دو نقطهٔ متمایز یک خط صعودی بساز.",
+      hint:"وقتی از چپ به راست می‌روی، ارتفاع باید بیشتر شود.", test:(p,q,dx,dy)=>dx*dy>0, why:"با افزایش x، مقدار y بیشتر می‌شود."},
+    {prompt:"با دو نقطهٔ متمایز یک خط نزولی بساز.",
+      hint:"وقتی از چپ به راست می‌روی، ارتفاع باید کمتر شود.", test:(p,q,dx,dy)=>dx*dy<0, why:"با افزایش x، مقدار y کمتر می‌شود."},
+    {prompt:`خطی با عرض از مبدأ ۳ بساز. خط باید از ${coordinate({x:0,y:3})} بگذرد.`,
+      hint:"می‌توانی یکی از نقطه‌ها را روی محور y و در ارتفاع ۳ بگذاری.", test:(p,q,dx,dy)=>dx!==0&&(p.y-3)*dx===p.x*dy,
+      why:"خط محور y را در ارتفاع ۳ قطع می‌کند."},
+    {prompt:"خطی افقی با شیب صفر بساز.",
+      hint:"دو نقطه باید y برابر و x متفاوت داشته باشند.", test:(p,q,dx,dy)=>dx!==0&&dy===0, why:"با تغییر x، مقدار y ثابت می‌ماند."},
+    {prompt:'خط عمودی <bdi class="math">x = −۲</bdi> را بساز.',
+      hint:"برای هر دو نقطه، x را ۲− بگیر و yهای متفاوت انتخاب کن.", test:(p,q,dx,dy)=>dx===0&&dy!==0&&p.x===-2,
+      why:"x هر دو نقطه ۲− است. شیب تعریف نشده است، چون تغییر x صفر است."}
+  ]},
+  {name:"رمزگشایی", title:"رمزگشایی نمودار", tasks:[
+    {a:2,b:-1,run:1},{a:-1,b:2,run:2},{a:1/2,b:-2,run:2},{a:0,b:0,run:2},{a:-2/3,b:1,run:3}
+  ]},
+  {name:"مهندس مدل", title:"مدل‌سازی مسئله", tasks:[
+    {title:"مخزن آب", prompt:"در آغاز ۲۰ لیتر آب در مخزن است. در هر دقیقه ۵ لیتر آب اضافه می‌شود. حجم آب را در ۸ دقیقهٔ اول مدل کن.",
+      a:5,b:20,xMax:8,yMin:0,yMax:60,xStep:2,yStep:20,xUnit:"دقیقه",yUnit:"لیتر", sample:2,
+      hint:"x را زمان بر حسب دقیقه و y را حجم بر حسب لیتر بگیر. در x = ۰ چه حجمی ثبت می‌شود؟ در یک دقیقه چقدر اضافه می‌شود؟"},
+    {title:"حرکت خودرو", prompt:"خودرو ابتدا ۵۰ کیلومتر از مبدأ فاصله دارد و با سرعت ثابت ۸۰ کیلومتر بر ساعت از مبدأ دور می‌شود. فاصله را در ۳ ساعت اول مدل کن.",
+      a:80,b:50,xMax:3,yMin:0,yMax:300,xStep:1,yStep:50,xUnit:"ساعت",yUnit:"کیلومتر", sample:2,
+      hint:"x زمان بر حسب ساعت است. فاصلهٔ اولیه و افزایش فاصله در هر ساعت را از متن پیدا کن."},
+    {title:"هزینهٔ تلفن", prompt:"هزینهٔ یک بستهٔ تلفن ۱۵٬۰۰۰ تومان ثابت و ۵۰۰ تومان برای هر دقیقه مکالمه است. هزینه را تا ۶۰ دقیقه مدل کن. زمان مکالمه را پیوسته در نظر بگیر.",
+      a:500,b:15000,xMax:60,yMin:0,yMax:45000,xStep:15,yStep:15000,xUnit:"دقیقه مکالمه",yUnit:"تومان", sample:30,
+      hint:"اگر هیچ مکالمه‌ای انجام نشود، چه مبلغی پرداخت می‌شود؟ هزینه برای یک دقیقهٔ اضافه چقدر بیشتر می‌شود؟"},
+    {title:"کاهش دما", prompt:"دمای ماده در آغاز ۲۵ درجهٔ سانتی‌گراد است و هر دقیقه ۲ درجه کم می‌شود. دما را در ۱۰ دقیقهٔ اول مدل کن.",
+      a:-2,b:25,xMax:10,yMin:0,yMax:30,xStep:2,yStep:5,xUnit:"دقیقه",yUnit:"درجهٔ سانتی‌گراد", sample:5,
+      hint:"مقدار اولیه را در x = ۰ بخوان. چون دما کم می‌شود، نرخ تغییر چه علامتی دارد؟"}
+  ]}
+];
+
+const byId = id => document.getElementById(id);
+const math = text => `<bdi class="math">${text}</bdi>`;
+const equal = (a,b) => Math.abs(a-b) <= 1e-9*Math.max(1,Math.abs(b));
+const storeKey = "lineArchitect.v2";
+const graph = byId("graph");
+const ctx = graph.getContext("2d");
+let plot;
+let frame;
+let current = fresh();
+let draft = {};
+let choice = null;
+let quizView = false;
+let retrying = false;
+
+
+function fresh() {
+  return {stage:0, index:stages.map(()=>0), earned:stages.map(()=>[]), builds:{}, quiz:null, best:null, view:"practice"};
+}
+
+function restore() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(storeKey));
+    if (!saved || typeof saved !== "object") return;
+    current.stage = Number.isInteger(saved.stage)&&stages[saved.stage] ? saved.stage : 0;
+    stages.forEach(({tasks}, s) => {
+      const index = saved.index?.[s];
+      if (Number.isInteger(index)&&tasks[index]) current.index[s]=index;
+      const earned = saved.earned?.[s];
+      if (Array.isArray(earned)) current.earned[s]=[...new Set(earned.filter(i=>Number.isInteger(i)&&tasks[i]))];
+    });
+    current.quiz = restoreQuiz(saved.quiz);
+    current.best = Number.isInteger(saved.best) && saved.best>=0 && saved.best<=8 ? saved.best : null;
+    current.view = saved.view==="quiz" ? "quiz" : "practice";
+    current.earned[1].forEach(index=>{
+      const pts=saved.builds?.[index];
+      if (Array.isArray(pts)&&pts.length===2&&pts.every(p=>validPoint(p,2))&&matches(stages[1].tasks[index],pts)) {
+        current.builds[index]=pts.every(p=>validPoint(p))?pts:examplePoints(index);
+      } else {
+        current.earned[1]=current.earned[1].filter(i=>i!==index);
+      }
+    });
+  } catch {}
+}
+
+function persist() {
+  try { localStorage.setItem(storeKey,JSON.stringify(current)); } catch {}
+}
+
+function completed(s) { return current.earned[s].length===stages[s].tasks.length; }
+function earnedCurrent() { return current.earned[current.stage].includes(current.index[current.stage]); }
+function solved() { return !retrying && earnedCurrent(); }
+function task() { return stages[current.stage].tasks[current.index[current.stage]]; }
+function points() { return draft.points || []; }
+
+function validPoint(p, subdivisions=1) {
+  return p && [p.x,p.y].every(v=>Number.isFinite(v)&&Math.abs(v)<=7&&Number.isInteger(v*subdivisions));
+}
+
+function examplePoints(index) {
+  const examples=[[[1,2],[3,6]],[[0,0],[1,1]],[[0,0],[1,-1]],[[0,3],[1,4]],[[0,1],[1,1]],[[-2,0],[-2,1]]];
+  return examples[index].map(([x,y])=>({x,y}));
+}
+
+function matches(item,[p,q]) {
+  if (!p||!q) return false;
+  const dx=q.x-p.x, dy=q.y-p.y;
+  return (dx!==0||dy!==0)&&item.test(p,q,dx,dy);
+}
+
+function parse(raw) {
+  const text=raw.trim().replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776)
+    .replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/[−–]/g,"-")
+    .replace(/٫/g,".").replace(/[⁄∕]/g,"/").replace(/[\u061c\u200e\u200f]/g,"")
+    .replace(/(\d)[٬,](?=\d{3}(?:[٬,.\/\s]|$))/g,"$1");
+  if (!text) return null;
+  const parts=text.split("/").map(p=>p.trim());
+  if (parts.length>2||!parts.every(p=>/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(p))) return NaN;
+  const result=Number(parts[0])/(parts.length===2?Number(parts[1]):1);
+  return Number.isFinite(result)&&Math.abs(result)<=1e9 ? result : NaN;
+}
+
+function fraction(value) {
+  if (Number.isInteger(value)) return fa(value);
+  for (let d=2;d<=56;d++) {
+    const n=Math.round(value*d);
+    if (Math.abs(value-n/d)<1e-12) return `${fa(n)}/${fa(d)}`;
+  }
+  return fa(value);
+}
+
+function equation(a,b) {
+  if (!a) return `y = ${fraction(b)}`;
+  const coefficient=fraction(a);
+  const sign=a===1?"":a===-1?"−":coefficient+(coefficient.includes("/")?" ":"");
+  return `y = ${sign}x${b===0?"":b>0?` + ${fraction(b)}`:` − ${fraction(-b)}`}`;
+}
+
+function nav() {
+  const buttons=stages.map(({name},s)=>`<button id="stage-${s}" type="button" ${s===current.stage&&!quizView?'aria-current="step"':""} aria-label="${name}${completed(s)?"، کامل شده":""}"><span class="badge" aria-hidden="true">${completed(s)?"✓":fa(s+1)}</span>${name}</button>`);
+  byId("nav").innerHTML=buttons.join("")+`<button id="quizTab" type="button" ${quizView?'aria-current="page"':""}><span class="badge" aria-hidden="true">✦</span>آزمون پایانی</button>`;
+  byId("quizTab").onclick=()=>showQuiz(true);
+  stages.forEach((_,s)=>byId(`stage-${s}`).onclick=()=>navigate(s,current.index[s],true));
+}
+
+function stats() {
+  byId("score").textContent=fa(current.earned.reduce((sum,list,s)=>sum+list.length*[10,15,20,25][s],0));
+  byId("progress").textContent=`${fa(stages.filter((_,s)=>completed(s)).length)} از ۴`;
+}
+
+function navigate(stage,index,focus=false,retry=false) {
+  quizView=false;
+  retrying=retry;
+  current.view="practice";
+  byId("practice").hidden=false;
+  byId("quiz").hidden=true;
+  current.stage=stage;
+  current.index[stage]=index;
+  draft={};
+  choice=null;
+  persist();
+  renderTask();
+  if(focus) {
+    byId("title").focus({preventScroll:true});
+    byId("title").scrollIntoView({block:"nearest"});
+  }
+}
+
+function say(message,tone="") {
+  const el=byId("feedback");
+  el.className=`feedback ${tone}`;
+  el.hidden=!message;
+  el.innerHTML=message;
+}
+
+function renderTask() {
+  nav();
+  stats();
+  const s=current.stage, item=task(), index=current.index[s], stage=stages[s];
+  byId("count").textContent=`مرحلهٔ ${fa(s+1)} · تمرین ${fa(index+1)} از ${fa(stage.tasks.length)}`;
+  byId("title").textContent=item.title||stage.title;
+  byId("prompt").innerHTML=item.prompt||"با خواندن دو نقطهٔ نشان‌دار، شیب و عرض از مبدأ خط نارنجی را پیدا کن.";
+  byId("boardTitle").textContent=s===3?"نمودار مسئله":"صفحهٔ مختصات";
+  byId("hint").open=false;
+  byId("hintText").textContent=item.hint||"عرض از مبدأ، مقدار y در x = ۰ است. برای شیب، تغییر y را بر تغییر x تقسیم کن. پاسخ کسری مثل ۲/۳ هم پذیرفته می‌شود.";
+  byId("table").innerHTML="";
+  byId("nextRow").hidden=true;
+  say("");
+  graph.classList.toggle("interactive",s===1&&!solved());
+  if (s===0) renderLab();
+  if (s===1) renderBuild();
+  if (s>=2) renderForm();
+  if (solved()) showSuccess();
+  renderExercisePicker(index,stage);
+  updateBoard();
+}
+
+function renderLab() {
+  const item=task();
+  draft.coeff=[...(solved()?item.end:item.start)];
+  byId("controls").innerHTML=`
+    <div class="ranges">${["شیب (a)","عرض از مبدأ (b)"].map((label,i)=>`
+      <label class="range" for="slider${i}">${label}<output id="sliderValue${i}">${fa(draft.coeff[i])}</output>
+      <input type="range" min="-5" max="5" step="0.5" id="slider${i}" value="${draft.coeff[i]}"></label>`).join("")}</div>
+    <div class="options" role="group" aria-label="گزینه‌های پیش‌بینی">${item.options.map((label,i)=>`<button type="button" id="option${i}" aria-pressed="${solved()&&i===item.correct}" ${solved()?"disabled":""}>${label}</button>`).join("")}</div>
+    <div class="actions"><button type="button" id="reset">بازنشانی لغزنده‌ها</button>${solved()?"":'<button type="button" class="primary" id="check">ثبت پیش‌بینی</button>'}</div>`;
+  const sliderUpdate=()=>{
+    draft.coeff=[0,1].map(i=>Number(byId(`slider${i}`).value));
+    draft.showComparison=solved()&&draft.coeff.every((v,i)=>v===item.end[i]);
+    [0,1].forEach(i=>byId(`sliderValue${i}`).value=fa(draft.coeff[i]));
+    updateBoard();
+  };
+  [0,1].forEach(i=>byId(`slider${i}`).oninput=sliderUpdate);
+  draft.showComparison=solved();
+  byId("reset").onclick=()=>{
+    item.start.forEach((v,i)=>byId(`slider${i}`).value=v);
+    sliderUpdate();
+  };
+  if(solved()) return;
+  item.options.forEach((_,i)=>byId(`option${i}`).onclick=()=>{
+    choice=i;
+    item.options.forEach((__,j)=>byId(`option${j}`).setAttribute("aria-pressed",i===j));
+    say("");
+  });
+  byId("check").onclick=()=>{
+    if(choice===null) return say("یکی از گزینه‌ها را انتخاب کن.","bad");
+    if(choice!==item.correct) return say("پیش‌بینی را دوباره امتحان کن. راهنمای حل را هم می‌توانی باز کنی.","bad");
+    award();
+  };
+}
+
+function numberField(label,id,disabled) {
+  return `<label for="${id}"><bdi>${label}</bdi><input id="${id}" type="text" inputmode="text" autocomplete="off" maxlength="28" spellcheck="false" ${disabled?"disabled":""}></label>`;
+}
+
+function fields(labels,prefix,disabled=false) {
+  return `<div class="numbers">${labels.map((label,i)=>numberField(label,prefix+i,disabled)).join("")}</div>`;
+}
+
+function pointFields(name,prefix) {
+  const locked=solved();
+  return `<fieldset class="point-edit">
+    <legend>نقطهٔ <bdi>${name}</bdi></legend>
+    <div class="point-column">
+      ${numberField("x",prefix+"0",locked)}
+      ${numberField("y",prefix+"1",locked)}
+    </div>
+  </fieldset>`;
+}
+
+function readPair(prefix) { return [0,1].map(i=>parse(byId(`${prefix}${i}`).value)); }
+
+function renderBuild() {
+  draft.points=solved()?current.builds[current.index[1]].map(p=>({...p})): [null,null];
+  draft.target=0;
+  byId("controls").innerHTML=`
+    <p class="small">برای گذاشتن نقاط A و B، روی تقاطع‌های نشان‌دار شبکه بزن. برای جابه‌جایی، نام نقطه را انتخاب کن و روی تقاطع تازه بزن.</p>
+    <form class="form" id="buildForm">
+      <div class="point-controls">
+        <label for="pointTarget">نقطه برای انتخاب روی نمودار</label>
+        <select id="pointTarget" ${solved()?"disabled":""}><option value="0">نقطهٔ A</option><option value="1">نقطهٔ B</option></select>
+        <div class="point-pair">${pointFields("A","ax")}${pointFields("B","bx")}</div>
+      </div>
+      ${solved()?"":'<div class="actions"><button type="button" id="clear">پاک کردن نقطه‌ها</button><button class="primary" type="submit">بررسی خط</button></div>'}
+    </form>
+    ${solved()?"":'<a class="graph-link" href="#board">رفتن به نمودار</a>'}`;
+  const ids=["ax","bx"];
+  const sync=()=>{
+    draft.points=ids.map(prefix=>{
+      const [x,y]=readPair(prefix);
+      return Number.isFinite(x)&&Number.isFinite(y)&&validPoint({x,y})?{x,y}:null;
+    });
+    updateBoard();
+  };
+  byId("pointTarget").onchange=event=>{draft.target=Number(event.currentTarget.value);};
+  ids.forEach((prefix,i)=>{
+    const pt=draft.points[i];
+    if (pt) {byId(prefix+"0").value=fa(pt.x);byId(prefix+"1").value=fa(pt.y);}
+    [0,1].forEach(j=>byId(prefix+j).oninput=()=>{
+      say("");
+      sync();
+    });
+  });
+  if(solved()) return;
+  byId("clear").onclick=()=>{
+    ids.forEach(prefix=>[0,1].forEach(i=>byId(prefix+i).value=""));
+    draft.target=0;
+    byId("pointTarget").value="0";
+    say("");
+    sync();
+  };
+  byId("buildForm").onsubmit=event=>{
+    event.preventDefault();
+    sync();
+    const [p,q]=points();
+    if(!p||!q) return say("برای هر دو نقطه، x و y باید عدد صحیح بین ۷− و ۷ باشند.","bad");
+    if(p.x===q.x&&p.y===q.y) return say("دو نقطه روی هم افتاده‌اند. یکی را جابه‌جا کن تا خط مشخص شود.","bad");
+    if(!matches(task(),[p,q])) {
+      return say(p.x===q.x?"این خط عمودی است و شیب تعریف‌شده ندارد. شرط مأموریت را دوباره بخوان.":"این خط هنوز با شرط مأموریت جور نیست. راهنمای حل را باز کن.","bad");
+    }
+    award();
+  };
+}
+
+function renderForm() {
+  const item=task(), model=current.stage===3;
+  byId("controls").innerHTML=`<form class="form" id="answer">
+    ${model?`<p class="small">${math("x")}: ${item.xUnit} · ${math("y")}: ${item.yUnit}</p>`:""}
+    ${fields(["شیب (a)","عرض از مبدأ (b)"],"ans",solved())}
+    <p class="small">نمونهٔ ورودی ${math("−۲")}، ${math("۰٫۵")} یا ${math("۱/۲")}</p>
+    ${solved()?"":'<div class="actions"><button type="submit" class="primary">بررسی معادله</button></div>'}
+  </form>`;
+  if(solved()) {
+    byId("ans0").value=item.a===-2/3?"−۲/۳":fa(item.a);
+    byId("ans1").value=fa(item.b);
+    draft.coeff=[item.a,item.b];
+    return;
+  }
+  [0,1].forEach(i=>byId(`ans${i}`).oninput=()=>{
+    draft.coeff=readPair("ans");
+    say("");
+    updateBoard();
+  });
+  byId("answer").onsubmit=event=>{
+    event.preventDefault();
+    const [a,b]=readPair("ans");
+    if(a===null||b===null) return say("هر دو مقدار را وارد کن. اگر مقدار یکی صفر است، خود صفر را بنویس.","bad");
+    if(!Number.isFinite(a)||!Number.isFinite(b)) return say("ورودی باید عدد صحیح، اعشاری یا کسر معتبر با مخرج غیرصفر باشد.","bad");
+    const aOk=equal(a,item.a), bOk=equal(b,item.b);
+    if(aOk&&bOk) return award();
+    const aInfo=model?"نرخ تغییر در هر واحد زمان را دوباره بخوان.":"برای شیب، اختلاف yها را بر اختلاف xها تقسیم کن.";
+    const bInfo=model?"مقدار y در ابتدای مسئله را پیدا کن.":"ارتفاع برخورد خط با محور y را دوباره بخوان.";
+    say(aOk?`شیب درست است. ${bInfo}`:bOk?`عرض از مبدأ درست است. ${aInfo}`:`${aInfo} ${bInfo}`,"bad");
+  };
+}
+
+function award() {
+  if(solved()) return;
+  const s=current.stage, index=current.index[s];
+  if(s===1) current.builds[index]=points().map(p=>({...p}));
+  if(!earnedCurrent()) current.earned[s].push(index);
+  retrying=false;
+  persist();
+  renderTask();
+  if(!byId("nextRow").hidden) byId("next").focus({preventScroll:true});
+  else byId("title").focus({preventScroll:true});
+}
+
+function showSuccess() {
+  const s=current.stage, item=task(), index=current.index[s], stage=stages[s];
+  let message=item.why;
+  if(s===2) message=`در ${math("x = ۰")}، مقدار y برابر ${math(fa(item.b))} است. از نقطهٔ اول تا دوم، ${math(`Δx = ${fa(item.run)}`)} و ${math(`Δy = ${fa(item.a*item.run)}`)} است.`;
+  if(s===3) message=`معادلهٔ ${math(equation(item.a,item.b))} درست است. برای ${math(`x = ${fa(item.sample)}`)}، مقدار مدل ${math(fa(item.a*item.sample+item.b))} ${item.yUnit} است.`;
+  const all=stages.every((_,i)=>completed(i));
+  if(all) message+=" هر چهار مرحله کامل شده‌اند.";
+  else if(completed(s)) message+=" این مرحله کامل شد.";
+  say(`آفرین! ${message}`,"ok");
+  const indices=stage.tasks.map((_,i)=>i);
+  const nextIndex=indices.find(i=>i>index&&!current.earned[s].includes(i))??indices.find(i=>!current.earned[s].includes(i));
+  const nextStage=stages.findIndex((_,i)=>i>s&&!completed(i));
+  const openStage=nextStage!==-1?nextStage:stages.findIndex((_,i)=>!completed(i));
+  const btn=byId("next");
+  if(nextIndex!==undefined) {
+    btn.textContent="تمرین بعد";
+    btn.onclick=()=>navigate(s,nextIndex,true);
+  } else if(openStage!==-1) {
+    btn.textContent=`ادامه به ${stages[openStage].name}`;
+    const unanswered=stages[openStage].tasks.findIndex((_,i)=>!current.earned[openStage].includes(i));
+    btn.onclick=()=>navigate(openStage,unanswered,true);
+  } else {
+    btn.textContent="رفتن به آزمون پایانی";
+    btn.onclick=()=>showQuiz(true);
+  }
+  byId("nextRow").hidden=false;
+  const actions=document.createElement("div");
+  actions.className="actions";
+  const retry=document.createElement("button");
+  retry.type="button";
+  retry.id="retryExercise";
+  retry.textContent="حل دوبارهٔ این تمرین";
+  retry.onclick=()=>navigate(s,index,true,true);
+  actions.append(retry);
+  byId("controls").append(actions);
+}
+
+function renderExercisePicker(index,stage) {
+  const picker=document.createElement("details");
+  picker.className="exercise-picker";
+  const earned=current.earned[current.stage];
+  picker.innerHTML=`<summary>فهرست تمرین‌ها · ${fa(earned.length)} از ${fa(stage.tasks.length)} حل شده</summary>
+    <label for="exercisePicker">رفتن به تمرین</label>
+    <select id="exercisePicker">${stage.tasks.map((_,i)=>`<option value="${i}" ${i===index?"selected":""}>تمرین ${fa(i+1)}${earned.includes(i)?" · حل‌شده":""}</option>`).join("")}</select>`;
+  byId("controls").append(picker);
+  byId("exercisePicker").onchange=event=>navigate(current.stage,Number(event.currentTarget.value),true);
+}
+
+
+function queueDraw() {
+  if(frame) return;
+  frame=requestAnimationFrame(()=>{
+    frame=0;
+    draw();
+  });
+}
+
+function setupPlot(w,h) {
+  if(current.stage===3) {
+    const {xMax,yMin,yMax,xStep,yStep}=task();
+    return {xMin:0,xMax,yMin,yMax,xStep,yStep,left:w<370?55:62,right:w-21,top:15,bottom:h-36};
+  }
+  const unit=Math.min((w-24)/15.4,(h-24)/15.4);
+  return {xMin:-7.5,xMax:7.5,yMin:-7.5,yMax:7.5,xStep:1,yStep:1,
+    left:w/2-7.5*unit,right:w/2+7.5*unit,top:h/2-7.5*unit,bottom:h/2+7.5*unit};
+}
+
+function sx(x) { return plot.left+(x-plot.xMin)*(plot.right-plot.left)/(plot.xMax-plot.xMin); }
+function sy(y) { return plot.bottom-(y-plot.yMin)*(plot.bottom-plot.top)/(plot.yMax-plot.yMin); }
+
+function stroke(x1,y1,x2,y2,color,width=1,dash=[]) {
+  ctx.strokeStyle=color;
+  ctx.lineWidth=width;
+  ctx.setLineDash(dash);
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  ctx.lineTo(x2,y2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function line(a,b,color,dash=[]) {
+  const xMin=plot.xMin,xMax=plot.xMax;
+  stroke(sx(xMin),sy(a*xMin+b),sx(xMax),sy(a*xMax+b),color,3,dash);
+}
+
+function dot(x,y,color,label="") {
+  const px=sx(x), py=sy(y);
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.arc(px,py,5,0,2*Math.PI);
+  ctx.fill();
+  if(!label) return;
+  ctx.font="bold 15px Tahoma, sans-serif";
+  ctx.textAlign=px>plot.right-22?"right":"left";
+  ctx.textBaseline=py<plot.top+23?"top":"bottom";
+  ctx.fillText(label,px+(px>plot.right-22?-8:8),py+(py<plot.top+23?4:-5));
+}
+
+function ticks() {
+  const {xMin,xMax,yMin,yMax,xStep,yStep,left,right,top,bottom}=plot;
+  const model=current.stage===3;
+  ctx.font="13px Tahoma, sans-serif";
+  ctx.direction="ltr";
+  ctx.textAlign="center";
+  ctx.textBaseline="top";
+  for(let x=Math.ceil(xMin/xStep)*xStep;x<=xMax;x+=xStep) {
+    stroke(sx(x),top,sx(x),bottom,x===0?"#98b8ab":"#334c43",x===0?1.5:1);
+    if(model||x===0||x%2===0) {
+      ctx.fillStyle="#d0ded6";
+      ctx.fillText(fa(x),sx(x),sy(0)+5);
+    }
+  }
+  ctx.textBaseline="middle";
+  ctx.textAlign="right";
+  for(let y=Math.ceil(yMin/yStep)*yStep;y<=yMax;y+=yStep) {
+    stroke(left,sy(y),right,sy(y),y===0?"#98b8ab":"#334c43",y===0?1.5:1);
+    if((model||y%2===0)&&y!==0) {
+      ctx.fillStyle="#d0ded6";
+      ctx.fillText(fa(y),sx(0)-6,sy(y));
+    }
+  }
+  ctx.fillStyle="#ecf1e9";
+  ctx.textAlign="right";
+  ctx.textBaseline="bottom";
+  ctx.fillText("x",right-3,sy(0)-5);
+  ctx.textAlign="left";
+  ctx.textBaseline="top";
+  ctx.fillText("y",sx(0)+5,top+1);
+}
+
+function drawSelectableIntersections() {
+  ctx.fillStyle="#83ae9d";
+  ctx.beginPath();
+  for(let x=-7;x<=7;x++) {
+    for(let y=-7;y<=7;y++) {
+      const px=sx(x), py=sy(y);
+      ctx.moveTo(px+1.6,py);
+      ctx.arc(px,py,1.6,0,2*Math.PI);
+    }
+  }
+  ctx.fill();
+}
+
+function draw() {
+  if(!ctx||quizView) return;
+  const w=graph.clientWidth,h=graph.clientHeight;
+  if(!w||!h) return;
+  const dpr=Math.min(window.devicePixelRatio||1,3);
+  const pw=Math.round(w*dpr), ph=Math.round(h*dpr);
+  if(graph.width!==pw||graph.height!==ph) {graph.width=pw;graph.height=ph;}
+  ctx.setTransform(pw/w,0,0,ph/h,0,0);
+  ctx.clearRect(0,0,w,h);
+  plot=setupPlot(w,h);
+  ticks();
+  const {left,right,top,bottom}=plot;
+  const s=current.stage, item=task();
+  const amber="#ffd080", mint="#a9efce";
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(left-2,top-2,right-left+4,bottom-top+4);
+  ctx.clip();
+  if(s===0) {
+    const [a,b]=draft.coeff;
+    if(draft.showComparison) line(...item.start,mint,[7,5]);
+    line(a,b,amber);
+    stroke(sx(0),sy(b),sx(1),sy(b),mint,2,[3,4]);
+    if(a!==0) {
+      stroke(sx(1),sy(b),sx(1),sy(a+b),mint,2,[3,4]);
+      if(Math.abs(b/a)<=7.5&&b!==0) dot(-b/a,0,mint,"X");
+    }
+    dot(0,b,amber);
+    dot(1,a+b,amber);
+  }
+  if(s===1) {
+    if(!solved()) drawSelectableIntersections();
+    const [p,q]=points();
+    if(p&&q) {
+      if(p.x!==q.x) {
+        const a=(q.y-p.y)/(q.x-p.x);
+        line(a,p.y-a*p.x,amber);
+      } else if(p.y!==q.y) {
+        stroke(sx(p.x),top,sx(p.x),bottom,amber,3);
+      }
+    }
+    if(p) dot(p.x,p.y,mint,"A");
+    if(q) dot(q.x,q.y,amber,"B");
+  }
+  const [a,b]=draft.coeff||[];
+  if(s>=2&&Number.isFinite(a)&&Number.isFinite(b)&&!solved()) line(a,b,mint,[7,5]);
+  if(s===2||s===3&&solved()) line(item.a,item.b,amber);
+  if(s===2) {
+    dot(0,item.b,amber,"P");
+    dot(item.run,item.a*item.run+item.b,amber,"Q");
+  }
+  if(s===3&&solved()) {
+    dot(0,item.b,amber);
+    dot(item.sample,item.a*item.sample+item.b,amber);
+  }
+  ctx.restore();
+}
+
+function dataTable(xs,getY) {
+  return `<table aria-label="جدول مقدارهای خط">
+  <tr><th scope="row">x</th>${xs.map(x=>`<td>${fa(x)}</td>`).join("")}</tr>
+  <tr><th scope="row">y</th>${xs.map(x=>`<td>${fa(getY(x))}</td>`).join("")}</tr>
+  </table>`;
+}
+
+function updateBoard() {
+  const s=current.stage, item=task();
+  const eq=byId("eq"), description=byId("description"), legend=byId("legend"), table=byId("table");
+  const [a,b]=draft.coeff||[];
+  const linePreview=Number.isFinite(a)&&Number.isFinite(b);
+  eq.hidden=false;
+  legend.innerHTML="";
+  if(s===0) {
+    eq.textContent=equation(a,b);
+    description.innerHTML=`عرض از مبدأ ${coordinate({x:0,y:b})} · ${math("Δx = ۱")} · ${math(`Δy = ${fa(a)}`)}`;
+    if(a!==0&&Math.abs(b/a)<=7.5&&b!==0) description.innerHTML+=`<br>برخورد با محور x در ${coordinate({x:-b/a,y:0})}`;
+    legend.innerHTML='<span class="key">خط فعلی</span>'+(draft.showComparison?'<span class="key attempt">خط قبل از تغییر</span>':"");
+    table.innerHTML=dataTable([-2,-1,0,1,2],x=>a*x+b);
+  }
+  if(s===1) {
+    const [p,q]=points();
+    eq.hidden=true;
+    description.innerHTML=[p?`نقطهٔ A ${coordinate(p)}`:"نقطهٔ A خالی است",q?`نقطهٔ B ${coordinate(q)}`:"نقطهٔ B خالی است"].join(" · ");
+    if(p&&q&& (p.x!==q.x||p.y!==q.y)) {
+      const dx=q.x-p.x, dy=q.y-p.y;
+      eq.hidden=false;
+      eq.textContent=dx===0?`x = ${fa(p.x)}`:equation(dy/dx,p.y-(dy/dx)*p.x);
+      description.innerHTML+=`<br>${math(`Δx = ${fa(dx)}`)} · ${math(`Δy = ${fa(dy)}`)}${dx===0?" · شیب تعریف نشده":` · ${math(`a = ${fa(dy)} ÷ ${fa(dx)}`)}`}`;
+    }
+  }
+  if(s===2) {
+    eq.hidden=!linePreview;
+    if(linePreview) eq.textContent=equation(a,b);
+    legend.innerHTML='<span class="key">خط هدف</span>'+(linePreview&&!solved()?'<span class="key attempt">خط پیشنهادی تو</span>':"");
+    description.innerHTML=`نقطهٔ P ${coordinate({x:0,y:item.b})} · نقطهٔ Q ${coordinate({x:item.run,y:item.a*item.run+item.b})}`;
+  }
+  if(s===3) {
+    eq.hidden=!linePreview;
+    if(linePreview) eq.textContent=equation(a,b);
+    if(linePreview) legend.innerHTML=solved()?'<span class="key">مدل درست</span>':'<span class="key attempt">مدل پیشنهادی تو</span>';
+    const range=math(`۰ ≤ x ≤ ${fa(item.xMax)}`);
+    description.innerHTML=`محور x: ${item.xUnit} · محور y: ${item.yUnit} · ${range}`;
+    if(linePreview&&!solved()) {
+      const end=a*item.xMax+b;
+      if(Math.min(b,end)>item.yMax||Math.max(b,end)<item.yMin) description.innerHTML+="<br>مدل پیشنهادی تو بیرون از کادر نمودار است.";
+    }
+    table.innerHTML=solved()?dataTable([0,item.sample,item.xMax],x=>item.a*x+item.b):"";
+  }
+  queueDraw();
+}
+
+graph.addEventListener("click",event=>{
+  if(quizView||current.stage!==1||solved()||!plot) return;
+  const rect=graph.getBoundingClientRect();
+  const px=event.clientX-rect.left-graph.clientLeft;
+  const py=event.clientY-rect.top-graph.clientTop;
+  const x=Math.round(plot.xMin+(px-plot.left)*(plot.xMax-plot.xMin)/(plot.right-plot.left));
+  const y=Math.round(plot.yMin+(plot.bottom-py)*(plot.yMax-plot.yMin)/(plot.bottom-plot.top));
+  const hitRadius=Math.min(10, (sx(1)-sx(0))*0.36);
+  if(!validPoint({x,y}) || Math.hypot(px-sx(x),py-sy(y))>hitRadius) {
+    say("روی یکی از تقاطع‌های نشان‌دار شبکه بزن.","bad");
+    return;
+  }
+  const target=draft.target;
+  const prefix=target===0?"ax":"bx";
+  byId(prefix+"0").value=fa(x);
+  byId(prefix+"1").value=fa(y);
+  byId(prefix+"0").dispatchEvent(new Event("input"));
+  if(!points()[1-target]) {
+    draft.target=1-target;
+    byId("pointTarget").value=String(draft.target);
+  }
+  byId("announce").textContent=`نقطهٔ ${target===0?"A":"B"} در مختصات ایکس ${fa(x)} و ایگرگ ${fa(y)} قرار گرفت.`;
+});
+
+const skills = [
+  {name:"رفتار خط", stage:0, note:"علامت شیب جهت خط را مشخص می‌کند. قدرمطلق شیب تندی آن را نشان می‌دهد."},
+  {name:"شیب از دو نقطه", stage:1, note:"شیب از تقسیم اختلاف yها بر اختلاف xها به‌دست می‌آید."},
+  {name:"عرض از مبدأ", stage:2, note:"عرض از مبدأ مقدار y در x = ۰ است. اگر نقطهٔ دیگری داری، مقدار b را از رابطهٔ y − ax پیدا کن."},
+  {name:"مدل‌سازی", stage:3, note:"ضریب x نرخ تغییر و جملهٔ ثابت مقدار اولیه است."}
+];
+
+function shuffled(values) {
+  const copy=[...values];
+  for(let i=copy.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
+
+function quizQuestion(skill,variant) {
+  if(skill===0) {
+    const lines=[
+      ["شیب از ۵− به ۲− تغییر می‌کند. رفتار خط چه می‌شود؟","نزولی و ملایم‌تر","نزولی و تندتر","صعودی و ملایم‌تر","افقی","قدر مطلق شیب از ۵ به ۲ کم می‌شود."],
+      ["شیب از ۱ به ۴ می‌رسد و عرض از مبدأ ثابت است. رفتار خط چه می‌شود؟","صعودی و تندتر","صعودی و ملایم‌تر","نزولی و تندتر","افقی","هر دو شیب مثبت‌اند و قدر مطلق شیب بیشتر می‌شود."],
+      ["اگر فقط عرض از مبدأ از ۴ به ۱ برسد، چه اتفاقی می‌افتد؟","خط ۳ واحد پایین می‌رود.","خط ۳ واحد بالا می‌رود.","شیب ۳ واحد کم می‌شود.","خط عمودی می‌شود.","با ثابت بودن شیب، مقدار y برای همهٔ xها سه واحد کم می‌شود."],
+      ["در یک خط، شیب صفر و عرض از مبدأ ۴− است. معادلهٔ خط کدام است؟",math("y = −۴"),math("x = −۴"),math("y = ۰"),math("y = ۴"),"با شیب صفر، مقدار y در همهٔ نقطه‌ها برابر عرض از مبدأ است."]
+    ];
+    const [prompt,...parts]=lines[variant];
+    const why=parts.pop();
+    return {prompt, options:parts, why};
+  }
+  if(skill===1) {
+    const [x,y,dx,dy]=[[-2,1,4,2],[1,3,3,-6],[-3,-2,4,0],[0,4,3,-2]][variant];
+    const p=coordinate({x,y}), q=coordinate({x:x+dx,y:y+dy});
+    const values=dy===0?[0,1,-1,2]:[dy/dx,-dy/dx,dx/dy,dy];
+    const options=[...new Set(values)];
+    for(const fallback of [0,1,-1,3]) if(options.length<4&&!options.includes(fallback)) options.push(fallback);
+    return {prompt:`شیب خطی که از ${p} و ${q} می‌گذرد چقدر است؟`, options:options.map(v=>math(fraction(v))),
+      why:`تغییر y برابر ${math(fa(dy))} و تغییر x برابر ${math(fa(dx))} است. شیب برابر ${math(fraction(dy/dx))} می‌شود.`};
+  }
+  if(skill===2) {
+    const [a,b,x]=[[2,-3,2],[-3,2,2],[1/2,4,4],[-1,-2,3]][variant];
+    const y=a*x+b;
+    const options=[...new Set([b,y,a*x,-b,a])].slice(0,4);
+    return {prompt:`شیب خط ${math(fraction(a))} است و از نقطهٔ ${coordinate({x,y})} می‌گذرد. عرض از مبدأ چند است؟`,
+      options:options.map(v=>math(fa(v))),why:`مختصات را در ${math("b = y − ax")} بگذار. تفاضل ${math(fa(y))} و ${math(fa(a*x))} برابر ${math(fa(b))} است.`};
+  }
+  const problems=[
+    {prompt:"دمای اتاق ابتدا ۱۸ درجه است و هر ساعت ۲ درجه بیشتر می‌شود. مدل دما بر حسب ساعت کدام است؟",a:2,b:18,why:"مقدار اولیه ۱۸ و نرخ تغییر ۲ درجه در ساعت است."},
+    {prompt:"مخزن ابتدا ۴۰ لیتر آب دارد و در هر دقیقه ۳ لیتر آب از آن خارج می‌شود. مدل حجم تا قبل از خالی‌شدن مخزن کدام است؟",a:-3,b:40,why:"مقدار اولیه ۴۰ لیتر است و حجم در هر دقیقه ۳ لیتر کاهش می‌یابد."},
+    {prompt:"هزینهٔ ثابت یک سرویس ۲۵٬۰۰۰ تومان است و به‌ازای هر کیلومتر ۴٬۰۰۰ تومان اضافه می‌شود. مدل هزینه بر حسب کیلومتر کدام است؟",a:4000,b:25000,why:"هزینهٔ اولیه ۲۵٬۰۰۰ تومان و نرخ افزایش ۴٬۰۰۰ تومان به‌ازای هر کیلومتر است."},
+    {prompt:"دوچرخه‌سوار ابتدا ۶ کیلومتر از مبدأ فاصله دارد. با سرعت ثابت ۱۲ کیلومتر بر ساعت از مبدأ دور می‌شود. مدل فاصله بر حسب ساعت کدام است؟",a:12,b:6,why:"فاصلهٔ اولیه ۶ کیلومتر است و در هر ساعت ۱۲ کیلومتر به آن اضافه می‌شود."}
+  ];
+  const {prompt,a,b,why}=problems[variant];
+  return {prompt, why, options:[[a,b],[-a,b],[b,a],[a,-b]].map(pair=>math(equation(...pair)))};
+}
+
+function restoreQuiz(saved) {
+  if(!saved||!Array.isArray(saved.items)||saved.items.length!==8||!Array.isArray(saved.answers)||saved.answers.length>8) return null;
+  const counts=[0,0,0,0], ids=new Set();
+  for(const q of saved.items) {
+    if(!q||!Number.isInteger(q.skill)||!skills[q.skill]||!Number.isInteger(q.variant)||q.variant<0||q.variant>3) return null;
+    if(!Array.isArray(q.order)||q.order.length!==4||!q.order.every(i=>Number.isInteger(i)&&i>=0&&i<4)||new Set(q.order).size!==4) return null;
+    counts[q.skill]++;
+    ids.add(q.skill*4+q.variant);
+  }
+  if(ids.size!==8||counts.some(n=>n!==2)||!saved.answers.every(a=>Number.isInteger(a)&&a>=0&&a<4)) return null;
+  return {items:saved.items, answers:saved.answers};
+}
+
+function beginQuiz() {
+  const previous=current.quiz?.items||[];
+  const items=skills.flatMap((_,skill)=>{
+    const used=previous.filter(q=>q.skill===skill).map(q=>q.variant);
+    return shuffled([0,1,2,3].filter(v=>!used.includes(v))).slice(0,2)
+      .map(variant=>({skill,variant,order:shuffled([0,1,2,3])}));
+  });
+  current.quiz={items:shuffled(items),answers:[]};
+  showQuiz(true);
+}
+
+function showQuiz(focus=false) {
+  quizView=true;
+  current.view="quiz";
+  persist();
+  nav();
+  byId("practice").hidden=true;
+  byId("quiz").hidden=false;
+  byId("quizMessage").hidden=true;
+  const attempt=current.quiz;
+  if(!attempt) renderQuizIntro();
+  else if(attempt.answers.length===attempt.items.length) renderQuizResults(attempt);
+  else renderQuizQuestion(attempt);
+  if(focus) {
+    byId("quizTitle").focus({preventScroll:true});
+    byId("quizTitle").scrollIntoView({block:"nearest"});
+  }
+}
+
+function renderQuizIntro() {
+  byId("quizCount").textContent="۸ سؤال · ۴ مهارت";
+  byId("quizTitle").textContent="آزمون پایانی";
+  byId("quizBody").innerHTML=`<div class="quiz-flow"><p>شیب، عرض از مبدأ و مدل‌سازی را در سؤال‌های جدید امتحان کن. نتیجه و توضیح پاسخ‌ها پس از سؤال آخر نمایش داده می‌شود.</p>
+    <div class="actions"><button id="startQuiz" class="primary" type="button">شروع آزمون</button></div></div>`;
+  byId("startQuiz").onclick=beginQuiz;
+}
+
+function renderQuizQuestion(attempt) {
+  const index=attempt.answers.length;
+  const item=attempt.items[index];
+  const question=quizQuestion(item.skill,item.variant);
+  byId("quizCount").textContent=`سؤال ${fa(index+1)} از ${fa(attempt.items.length)}`;
+  byId("quizTitle").textContent=skills[item.skill].name;
+  byId("quizBody").innerHTML=`<form class="quiz-flow" id="quizForm">
+    <p>${question.prompt}</p>
+    <div class="options" role="group" aria-label="گزینه‌های پاسخ">${item.order.map((option,i)=>`<button id="quizOption${i}" type="button" aria-pressed="false">${question.options[option]}</button>`).join("")}</div>
+    <div class="actions"><button class="primary" type="submit">${index===7?"ثبت و دیدن نتیجه":"ثبت و سؤال بعد"}</button></div>
+    </form>`;
+  let selected=null;
+  let submitted=false;
+  item.order.forEach((option,i)=>byId(`quizOption${i}`).onclick=()=>{
+    selected=option;
+    item.order.forEach((_,j)=>byId(`quizOption${j}`).setAttribute("aria-pressed",i===j));
+    byId("quizMessage").hidden=true;
+  });
+  byId("quizForm").onsubmit=event=>{
+    event.preventDefault();
+    if(submitted) return;
+    if(selected===null) {
+      byId("quizMessage").textContent="یک گزینه را انتخاب کن.";
+      byId("quizMessage").hidden=false;
+      return;
+    }
+    submitted=true;
+    attempt.answers.push(selected);
+    if(attempt.answers.length===8) {
+      current.best=Math.max(current.best??0,attempt.answers.filter(i=>i===0).length);
+    }
+    showQuiz(true);
+  };
+}
+
+function renderQuizResults(attempt) {
+  const correct=attempt.answers.filter(i=>i===0).length;
+  const rightBySkill=skills.map((_,skill)=>attempt.items.filter((q,i)=>q.skill===skill&&attempt.answers[i]===0).length);
+  const review=attempt.items.map((q,i)=>{
+    if(attempt.answers[i]===0) return "";
+    const question=quizQuestion(q.skill,q.variant);
+    return `<details><summary>سؤال ${fa(i+1)} · ${skills[q.skill].name}</summary>
+      <p>${question.prompt}</p>
+      <p>پاسخ تو: ${question.options[attempt.answers[i]]}</p>
+      <p>پاسخ درست: ${question.options[0]}</p>
+      <p>${question.why}</p></details>`;
+  }).join("");
+  const practice=rightBySkill.indexOf(Math.min(...rightBySkill));
+  byId("quizCount").textContent="کارنامهٔ آزمون";
+  byId("quizTitle").textContent=correct===8?"همهٔ پاسخ‌ها درست بود":"نتیجه و مرور پاسخ‌ها";
+  byId("quizBody").innerHTML=`<div class="quiz-flow">
+    <div><p class="quiz-score">${fa(correct)} از ۸</p><p class="small">بهترین نتیجه: ${fa(Math.max(correct,current.best??0))} از ۸</p></div>
+    <ul class="skill-results">${skills.map((s,i)=>`<li><span>${s.name}</span><strong>${fa(rightBySkill[i])} از ۲</strong></li>`).join("")}</ul>
+    ${review?`<div class="quiz-review"><h3>مرور پاسخ‌های اشتباه</h3>${review}</div>`:""}
+    ${review?`<p class="small">${skills[practice].note}</p>`:""}
+    <div class="actions"><button id="retakeQuiz" type="button" class="primary">آزمون با سؤال‌های جدید</button>
+    ${review?`<button id="practiceWeak" type="button">تمرین ${skills[practice].name}</button>`:""}</div>
+  </div>`;
+  byId("retakeQuiz").onclick=beginQuiz;
+  if(review) byId("practiceWeak").onclick=()=>navigate(skills[practice].stage,0,true,true);
+}
+
+
+const compact=window.matchMedia("(max-width: 760px)");
+function placeBoard() {
+  const board=byId("board");
+  if(compact.matches) byId("prompt").after(board);
+  else document.querySelector(".work").append(board);
+  queueDraw();
+}
+if(compact.addEventListener) compact.addEventListener("change",placeBoard);
+else compact.addListener(placeBoard);
+placeBoard();
+window.addEventListener("resize",queueDraw);
+if("ResizeObserver" in window) new ResizeObserver(queueDraw).observe(graph);
+restore();
+if(current.view==="quiz") showQuiz();
+else navigate(current.stage,current.index[current.stage]);
+</script>
+</body>
+</html>
